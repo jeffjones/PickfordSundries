@@ -515,40 +515,18 @@
 
       <div class="two_third last">
 
-        <form action="javascript:alert('success!');" id="ajax-contact-form" class="contactForm" form name="frm" action="/cgi-bin/formmail/contact.pl" method="post" onsubmit="return validate(frm)">
-          <div id="note"></div>
-          <p>
-            <input type="text" name="Name" value="Your Name" onblur="if (this.value == ''){this.value = 'Your Name'; }" onfocus="if (this.value == 'Your Name') {this.value = '';}" >
-            &nbsp;
-            <input type="text" name="formmail_mail_email" value="Your Email" onblur="if (this.value == ''){this.value = 'Your Email'; }" onfocus="if (this.value == 'Your Email') {this.value = '';}">
-          </p>
-          <p>
-            <textarea name="Message" rows="10" cols="20" onblur="if (this.value == ''){this.value = 'Your Message'; }" onfocus="if (this.value == 'Your Message') {this.value = '';}">Your Message</textarea>
-          </p>
-          <p>
-            <input type="submit" name="Submit" class="submit" value="Submit">
-          </p>
-        </form>
+        <h3>Join our Mailing List</h3>
+
+        <iframe src='http://www.reverbnation.com/widget_code/html_widget/artist_2155352?widget_id=54&posted_by=artist_2155352&pwc[design]=customized&pwc[background_color]=%23fff9f0&pwc[size]=fit' width='100%' height='185' class='widget_iframe' frameborder='0' scrolling='no'></iframe>><br/>
+
+		<img style="visibility:hidden;width:0px;height:0px;" border=0 width=0 height=0 src="http://www.reverbnation.com/widgets/trk/44/artist_2155352//t.gif" /><img src="http://b.scorecardresearch.com/p?c1=2&c2=10349858&cv=2.0&cj=1" style="display: none" border="0" height="1" width="1" alt="ComScore"/>        			
+
       </div>
       <div class="clear"></div>
     </div>
     <!-- /END .center--> 
   </section>
   <section id="copyright" class="footer content">
-    <div class="center">
-
-
-        <h3>Join our Mailing List</h3>
-
-        <iframe src='http://www.reverbnation.com/widget_code/html_widget/artist_2155352?widget_id=54&posted_by=artist_2155352&pwc[design]=customized&pwc[background_color]=%23fff9f0&pwc[size]=fit' width='100%' height='185' class='widget_iframe' frameborder='0' scrolling='no'></iframe>><br/>
-
-<img style="visibility:hidden;width:0px;height:0px;" border=0 width=0 height=0 src="http://www.reverbnation.com/widgets/trk/44/artist_2155352//t.gif" /><img src="http://b.scorecardresearch.com/p?c1=2&c2=10349858&cv=2.0&cj=1" style="display: none" border="0" height="1" width="1" alt="ComScore"/>        			
-
-      </div>
-
-      <div class="clear"></div>
-
-    </div>
 
     <!-- /END .center--> 
 
@@ -563,183 +541,6 @@
 </div>
 
 
-
-<!-- End content section -->
-
-
-	<script type="text/javascript" language="JavaScript">
-
-	function validate(frm) {
-
-		var inputFields = new Array("Name", "formmail_mail_email", "Message");
-
-		var counter;
-
-		var name;
-
-		var msg = "Please complete the following fields:\n";
-
-		var badFields = "";
-
-		for (counter = 0; counter < inputFields.length; counter++) {
-
-			name = inputFields[counter];
-
-			if (frm.elements[name].value.length == 0) {
-
-				if (name == "formmail_mail_email") {
-
-					badFields = badFields + "  - Email \n";
-
-				} else {
-
-					badFields = badFields + "  - " + name + "\n";
-
-				}
-
-			}
-
-		}
-
-		if (badFields.length != 0) {
-
-			alert(msg + badFields);
-
-			return false;
-
-		}
-
-		if (frm.formmail_mail_email.value.length > 0) {
-
-			return emailCheck(frm.formmail_mail_email.value);
-
-		} else {
-
-			return true;
-
-		}
-
-	}
-
-
-
-	function emailCheck(emailStr) {
-
-		var emailPat=/^(.+)@(.+)$/;
-
-		var specialChars="\\(\\)<>@,;:\\\\\\\"\\.\\[\\]";
-
-		var validChars="\[^\\s" + specialChars + "\]";
-
-		var quotedUser="(\"[^\"]*\")";
-
-		var ipDomainPat=/^\[(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})\]$/;
-
-		var atom=validChars + '+';
-
-		var word="(" + atom + "|" + quotedUser + ")";
-
-		var userPat=new RegExp("^" + word + "(\\." + word + ")*$");
-
-		var domainPat=new RegExp("^" + atom + "(\\." + atom +")*$");
-
-		var matchArray=emailStr.match(emailPat);
-
-
-
-		if (matchArray==null) {
-
-			alert("Email address seems incorrect (check @ and .'s)");
-
-			return false;
-
-		}
-
-
-
-		var user=matchArray[1];
-
-		var domain=matchArray[2];
-
-
-
-		if (user.match(userPat)==null) {
-
-    			alert("The username doesn't seem to be valid.");
-
-			return false;
-
-		}
-
-
-
-		var IPArray=domain.match(ipDomainPat);
-
-		if (IPArray!=null) {
-
-	  		for (var i=1;i<=4;i++) {
-
-			    if (IPArray[i]>255) {
-
-		        	alert("Destination IP address is invalid!");
-
-				return false;
-
-	 	   		}
-
-    			}
-
-    			return true;
-
-		}
-
-
-
-		var domainArray=domain.match(domainPat);
-
-		if (domainArray==null) {
-
-			alert("The domain name doesn't seem to be valid.");
-
-    			return false;
-
-		}
-
-
-
-		var atomPat=new RegExp(atom,"g");
-
-		var domArr=domain.match(atomPat);
-
-		var len=domArr.length;
-
-		if (domArr[domArr.length-1].length<2 || domArr[domArr.length-1].length>3) {
-
-		   alert("The address must end in a three-letter domain, or two letter country.");
-
-   			return false;
-
-		}
-
-
-
-		if (len<2) {
-
-   			var errStr="This address is missing a hostname!";
-
-			alert(errStr);
-
-   		return false;
-
-		}
-
-
-
- 		return true;
-
-	}
-
-</script>
 <!--/border-->
 
 <div id="left-border"></div>
