@@ -1,0 +1,340 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+
+"http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<title>Feedback</title>
+
+<link href="contact.css" rel="stylesheet" type="text/css">
+
+</head>
+
+
+
+<body>
+
+<form name="frm" action="/cgi-bin/formmail/contact.pl" method="post" onsubmit="return validate(frm)">
+
+<table width="750" border="0" cellspacing="0" cellpadding="0">
+
+  <tr>
+
+    <td>&nbsp;</td>
+
+  </tr>
+
+  <tr>
+
+    <td class="title"><font size="+1">Contact</font></td>
+
+  </tr>
+
+  <tr>
+
+    <td><hr size="1" noshade="noshade"></td>
+
+  </tr>
+
+  <tr>
+
+    <td>&nbsp;</td>
+
+  </tr>
+
+  <tr>
+
+    <td class="text">Contact</td>
+
+  </tr>
+
+  <tr>
+
+    <td class="text">&nbsp;</td>
+
+  </tr>
+
+  <tr>
+
+    <td class="text"><table width="81%" border="0" cellspacing="6" cellpadding="0">
+
+    
+
+      <tr>
+
+<td>&nbsp;</td>
+
+<td class='text'><div align='left'>Name</div></td>
+
+<td colspan='3'><input type='text' name='Name'></td>
+
+</tr>
+
+<tr><td>&nbsp;</td>
+
+<td class='text'><div align='left'>Email</div></td>
+
+<td colspan='3'><input type='text' name='formmail_mail_email'></td>
+
+</tr>
+
+<tr>
+
+<td valign='top' class='text'>&nbsp;</td>
+
+<td valign='top' class='text'><div align='left'>Message</div></td>
+
+<td colspan='3'><textarea name='Message' cols='45' rows='10'></textarea></td>
+
+</tr>
+
+   
+
+    
+
+      <tr>
+
+        <td>&nbsp;</td>
+
+        <td>&nbsp;</td>
+
+        <td width="35%">&nbsp;</td>
+
+        <td width="13%">&nbsp;</td>
+
+        <td width="35%">&nbsp;</td>
+
+      </tr>
+
+      <tr>
+
+        <td>&nbsp;</td>
+
+        <td>&nbsp;</td>
+
+        <td><input type="submit" name="Submit" value="Submit">
+
+            <input type="reset" name="Submit" value="Clear"></td>
+
+        <td>&nbsp;</td>
+
+        <td>&nbsp;</td>
+
+      </tr>
+
+    </table></td>
+
+  </tr>
+
+  <tr>
+
+    <td>&nbsp;</td>
+
+  </tr>
+
+  <tr>
+
+    <td>&nbsp;</td>
+
+  </tr>
+
+  <tr>
+
+    <td>&nbsp;</td>
+
+  </tr>
+
+  <tr>
+
+    <td>&nbsp;</td>
+
+  </tr>
+
+</table>
+
+</form>
+
+	<script type="text/javascript" language="JavaScript">
+
+	function validate(frm) {
+
+		var inputFields = new Array("Name", "formmail_mail_email", "Message");
+
+		var counter;
+
+		var name;
+
+		var msg = "Please complete the following fields:\n";
+
+		var badFields = "";
+
+		for (counter = 0; counter < inputFields.length; counter++) {
+
+			name = inputFields[counter];
+
+			if (frm.elements[name].value.length == 0) {
+
+				if (name == "formmail_mail_email") {
+
+					badFields = badFields + "  - Email \n";
+
+				} else {
+
+					badFields = badFields + "  - " + name + "\n";
+
+				}
+
+			}
+
+		}
+
+		if (badFields.length != 0) {
+
+			alert(msg + badFields);
+
+			return false;
+
+		}
+
+		if (frm.formmail_mail_email.value.length > 0) {
+
+			return emailCheck(frm.formmail_mail_email.value);
+
+		} else {
+
+			return true;
+
+		}
+
+	}
+
+
+
+	function emailCheck(emailStr) {
+
+		var emailPat=/^(.+)@(.+)$/;
+
+		var specialChars="\\(\\)<>@,;:\\\\\\\"\\.\\[\\]";
+
+		var validChars="\[^\\s" + specialChars + "\]";
+
+		var quotedUser="(\"[^\"]*\")";
+
+		var ipDomainPat=/^\[(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})\]$/;
+
+		var atom=validChars + '+';
+
+		var word="(" + atom + "|" + quotedUser + ")";
+
+		var userPat=new RegExp("^" + word + "(\\." + word + ")*$");
+
+		var domainPat=new RegExp("^" + atom + "(\\." + atom +")*$");
+
+		var matchArray=emailStr.match(emailPat);
+
+
+
+		if (matchArray==null) {
+
+			alert("Email address seems incorrect (check @ and .'s)");
+
+			return false;
+
+		}
+
+
+
+		var user=matchArray[1];
+
+		var domain=matchArray[2];
+
+
+
+		if (user.match(userPat)==null) {
+
+    			alert("The username doesn't seem to be valid.");
+
+			return false;
+
+		}
+
+
+
+		var IPArray=domain.match(ipDomainPat);
+
+		if (IPArray!=null) {
+
+	  		for (var i=1;i<=4;i++) {
+
+			    if (IPArray[i]>255) {
+
+		        	alert("Destination IP address is invalid!");
+
+				return false;
+
+	 	   		}
+
+    			}
+
+    			return true;
+
+		}
+
+
+
+		var domainArray=domain.match(domainPat);
+
+		if (domainArray==null) {
+
+			alert("The domain name doesn't seem to be valid.");
+
+    			return false;
+
+		}
+
+
+
+		var atomPat=new RegExp(atom,"g");
+
+		var domArr=domain.match(atomPat);
+
+		var len=domArr.length;
+
+		if (domArr[domArr.length-1].length<2 || domArr[domArr.length-1].length>3) {
+
+		   alert("The address must end in a three-letter domain, or two letter country.");
+
+   			return false;
+
+		}
+
+
+
+		if (len<2) {
+
+   			var errStr="This address is missing a hostname!";
+
+			alert(errStr);
+
+   		return false;
+
+		}
+
+
+
+ 		return true;
+
+	}
+
+</script>
+
+</body>
+
+</html>
+
+ 
